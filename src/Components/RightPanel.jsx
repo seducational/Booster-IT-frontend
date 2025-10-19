@@ -1,7 +1,7 @@
 import { useState } from "react";
 import StepIndicator from "./StepIndicator";
 import LoginForm from "./LoginForm";
-import OTPVerification from "./OTPVerification";
+import OTPVerification from "./OtpVerification";
 import UserDetails from "./UserDetails";
 import ServiceSelection from "./ServiceSelection";
 import Confirmation from "./Confirmation";
