@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./index.css";
-import LeftPanel from "./components/LeftPanel";
-import RightPanel from "./components/RightPanel";
+const LeftPanel = require('./Components/LeftPanel');
+const RightPanel = require('./Components/RightPanel');
 
 export default function App() {
   return (
