@@ -1,10 +1,12 @@
 import { useState } from "react";
+import "./LoadingButton.css";
 
-export default function LoginForm({ onContinue }) {
+export default function LoginForm({ onContinue, isLoading }) {
   const [method, setMethod] = useState("phone");
   const [value, setValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (method === "phone" && !/^\d{10}$/.test(value)) {
       alert("Enter a valid 10-digit phone number");
@@ -15,7 +17,14 @@ export default function LoginForm({ onContinue }) {
       return;
     }
 
-    onContinue({ method, contact: value }); // 👈 This will call handleSendOtp in RightPanel
+    setIsSubmitting(true);
+    try {
+      await onContinue({ method, contact: value });
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -79,8 +88,18 @@ export default function LoginForm({ onContinue }) {
           </div>
         )}
 
-        <button type="submit" className="btn btn-primary">
-          CONTINUE
+        <button 
+          type="submit" 
+          className="btn btn-primary"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <span>
+              <i className="fas fa-spinner fa-spin"></i> Sending OTP...
+            </span>
+          ) : (
+            "CONTINUE"
+          )}
         </button>
       </form>
 

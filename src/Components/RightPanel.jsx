@@ -10,8 +10,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function RightPanel() {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendOtp = async ({ method, contact }) => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}api/send-otp`, {
         method: "POST",
@@ -35,6 +37,8 @@ export default function RightPanel() {
     } catch (err) {
       console.error("Error sending OTP:", err);
       alert("Error connecting to server");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,7 +46,7 @@ export default function RightPanel() {
     <div className="login-right">
       <StepIndicator currentStep={step} />
 
-      {step === 1 && <LoginForm onContinue={handleSendOtp} />}
+      {step === 1 && <LoginForm onContinue={handleSendOtp} isLoading={isLoading} />}
 
       {step === 2 && (
         <OTPVerification
